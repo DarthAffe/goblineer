@@ -34,7 +34,7 @@ $sellerCount = number_format(mysqli_fetch_row(mysqli_query($conn, "SELECT count(
 
   <div class="text-center">
 
-    <h1>Welcome to Goblineer!</h1>
+    <h1>Welcome to Goblineer (Antonidas)!</h1>
   
   </div>
 

@@ -18,7 +18,6 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
         <ul class="nav navbar-nav navbar-center">
-            <li class="navbar-hoverable"><a href="/blog">Blog</a></li>
             <li role="presentation" class="dropdown navbar-hoverable">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -45,7 +44,6 @@
                     <li><a href="/categories/cooking">Cooking</a></li>
                 </ul>
             </li>
-            <li class="navbar-hoverable"><a href="/addon">Addon</a></li>
             <li class="navbar-hoverable"><a href="/uc">Undercut Checker</a></li>
             <li class="navbar-hoverable"><a href="/seller">Seller Search</a></li>
             <li class="navbar-hoverable"><a href="/custom">Custom Tables</a></li>
