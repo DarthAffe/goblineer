@@ -45,7 +45,7 @@ if(isset($item)){
 <?php include "inc/header.inc.php"; ?>
 
 
-<h2><a href='https://wowhead.com/item=<?php echo $item;?>' data-wowhead='domain=de' class='q3 iconmedium1 links' rel='item=<?php echo $item;?>' class="text-center"></a></h2>
+<h2><a href='https://wowhead.com/item=<?php echo $item;?>' data-wowhead='domain=de' data-wh-icon-size="medium" class='q3 iconmedium1 links' rel='item=<?php echo $item;?>' class="text-center"></a></h2>
 <p>
    <h4>Lowest Price: <?php echo number_format(item($item, $conn), 2);?><span class='gold-g'>g</span></h4>
    <h4>Market Value: <?php echo number_format(marketValue($item, $conn), 2); ?><span class='gold-g'>g</span></h4>

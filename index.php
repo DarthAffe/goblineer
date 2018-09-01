@@ -68,7 +68,7 @@ $sellerCount = number_format(mysqli_fetch_row(mysqli_query($conn, "SELECT count(
 		<hr>
 
 <!--		<h2 class="text-left">
-			<a href='https://wowhead.com/item=124124' class='q3 iconmedium1 links' data-wowhead='domain=de' rel='item=124124' class="text-center"></a>
+			<a href='https://wowhead.com/item=124124' class='q3 iconmedium1 links' data-wowhead='domain=de' data-wowhead='domain=de' rel='item=124124' class="text-center"></a>
 			:
 			<?php //echo $bloodPrice; ?><span class='gold-g'>g </span>
 			<a href='/blood' class="btn btn-default links">See Blood of Sargeras Price in-depth</a>

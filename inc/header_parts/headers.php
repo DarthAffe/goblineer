@@ -32,7 +32,7 @@
 
 <!-- Wowhead tooltips -->
 <script async type="text/javascript" src="//wow.zamimg.com/widgets/power.js"></script>
-<script>var wowhead_tooltips = { "colorlinks": true, "iconizelinks": true, "renamelinks": true }</script>
+<script>var wowhead_tooltips = { "colorlinks": true, "iconizelinks": true, "renamelinks": true, iconSize: 'tiny' }</script>
 
 <!-- Bootstap CSS -->
 <link href="./css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">

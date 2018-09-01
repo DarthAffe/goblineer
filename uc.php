@@ -56,7 +56,7 @@ if (isset($seller)) {
 
                   $minPrice = number_format(item($item, $conn), 2);
                   $tableRow = "<td>" . $quantity . "</td>
-                         <td><a href='item.php?item=" . $item . "' data-wowhead='domain=de' class='q3 links' rel='item=" . $item . "'></td>
+                         <td><a href='item.php?item=".$item."' class='q3 links' rel='item=".$item."&domain=de'></td>
                          <td>" . number_format($unit_price / 10000, 2) . "<span class='gold-g'>g</span></td>
                          <td>" . number_format($buyout / 10000, 2) . "<span class='gold-g'>g</span></td>
                          <td>" . $counter . "</td>
