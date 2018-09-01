@@ -39,8 +39,9 @@ $(document).ready(function () {
     }
 
     var dataDate1 = dataDate0.map(Number);
-
     var dataDate = dataDate1.map(function(x){
+        var timezoneOffset = 2*3600 // UTC+2
+        x = new Date(x + timezoneOffset).getTime();
         return Highcharts.dateFormat('%Y.%m.%d %H:%M',x*1000);
     }); 
     

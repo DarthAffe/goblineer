@@ -55,22 +55,6 @@ require __DIR__ . "/cron_includes.php";
 
 function writeData($conn, $responseObject){
 
-	$last_updated_unix_row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT MAX(realm) FROM status"));
-	$last_updated_unix = $last_updated_unix_row["MAX(realm)"];
-	$last_updated = substr($last_updated_unix_row["MAX(realm)"], 0, -3);
-	/*Archiving previous data*/
-	$historicalSql = "INSERT INTO historical(item, marketvalue, quantity, date, minbuyout) SELECT mv.item, mv.marketvalue, mv.quantity, ".$last_updated.", (SELECT MIN(a.buyout / a.quantity)/10000 FROM auctions AS a WHERE mv.item = a.item) AS MIN  FROM marketvalue AS mv";
-	mysqli_query($conn, $historicalSql);
-
-      /*deleting duplicates*/
-      mysqli_query($conn,    "CREATE TABLE historical_tmp LIKE historical;
-                              INSERT INTO historical_tmp (item, marketvalue, quantity, date, minbuyout) SELECT DISTINCT item, marketvalue, quantity, date, minbuyout FROM `historical`;
-                              TRUNCATE TABLE historical;
-                              INSERT INTO historical SELECT * FROM historical_tmp;
-                              DROP TABLE historical_tmp;");
-
-
-
    $sql = "INSERT INTO status (realm) VALUES(".$responseObject['files'][0]['lastModified'].");";
    mysqli_query($conn, $sql);
 
@@ -117,12 +101,26 @@ function writeData($conn, $responseObject){
                         DROP TABLE auctions_tmp");
 
 
-
-
    echo "Update successful.". PHP_EOL;
    echo "Updating Market Values.". PHP_EOL;
    system('php5 '.dirname(__FILE__).'/cron_mv_all.php 2>&1', $output);
    echo $output. PHP_EOL;
+   
+   echo "Updating historic values.". PHP_EOL;
+   	$last_updated_unix_row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT MAX(realm) FROM status"));
+	$last_updated_unix = $last_updated_unix_row["MAX(realm)"];
+	$last_updated = substr($last_updated_unix_row["MAX(realm)"], 0, -3);
+         /*Add current data to archive*/
+	$historicalSql = "INSERT INTO historical(item, marketvalue, quantity, date, minbuyout) SELECT mv.item, mv.marketvalue, mv.quantity, ".$last_updated.", (SELECT MIN(a.buyout / a.quantity)/10000 FROM auctions AS a WHERE mv.item = a.item) AS MIN  FROM marketvalue AS mv";
+	mysqli_query($conn, $historicalSql);
+
+      /*deleting duplicates*/
+      mysqli_query($conn,    "CREATE TABLE historical_tmp LIKE historical;
+                              INSERT INTO historical_tmp (item, marketvalue, quantity, date, minbuyout) SELECT DISTINCT item, marketvalue, quantity, date, minbuyout FROM `historical`;
+                              TRUNCATE TABLE historical;
+                              INSERT INTO historical SELECT * FROM historical_tmp;
+                              DROP TABLE historical_tmp;");
+   
    //system('pm2 restart bot', $output); //Restarts the discord bot to prevent caching issues. Replace 'bot' with the name of the apprunning in pm2
    //echo $output. PHP_EOL;
 
