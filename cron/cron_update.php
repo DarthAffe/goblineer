@@ -5,7 +5,7 @@ ini_set('default_socket_timeout', 1000);
 require __DIR__ . "/cron_includes.php";
 
 
-   $response = file_get_contents('https://'. $realmRegion .'.api.battle.net/wow/auction/data/'. $realmName .'?locale=en_GB&apikey=' . $apiKey);
+   $response = file_get_contents('https://'. $realmRegion .'.api.battle.net/wow/auction/data/'. $realmName .'?locale=de_DE&apikey=' . $apiKey);
    $responseObject = json_decode($response, true);
 
 
@@ -59,12 +59,12 @@ function writeData($conn, $responseObject){
 	$last_updated_unix = $last_updated_unix_row["MAX(realm)"];
 	$last_updated = substr($last_updated_unix_row["MAX(realm)"], 0, -3);
 	/*Archiving previous data*/
-	$historicalSql = "INSERT INTO historical(item, marketvalue, quantity, date) SELECT item, marketvalue, quantity, ".$last_updated." FROM marketvalue";
+	$historicalSql = "INSERT INTO historical(item, marketvalue, quantity, date, minbuyout) SELECT mv.item, mv.marketvalue, mv.quantity, ".$last_updated.", (SELECT MIN(a.buyout / a.quantity)/10000 FROM auctions AS a WHERE mv.item = a.item) AS MIN  FROM marketvalue AS mv";
 	mysqli_query($conn, $historicalSql);
 
       /*deleting duplicates*/
       mysqli_query($conn,    "CREATE TABLE historical_tmp LIKE historical;
-                              INSERT INTO historical_tmp (item, marketvalue, quantity, date) SELECT DISTINCT item, marketvalue, quantity, date FROM `historical`;
+                              INSERT INTO historical_tmp (item, marketvalue, quantity, date, minbuyout) SELECT DISTINCT item, marketvalue, quantity, date, minbuyout FROM `historical`;
                               TRUNCATE TABLE historical;
                               INSERT INTO historical SELECT * FROM historical_tmp;
                               DROP TABLE historical_tmp;");
@@ -121,10 +121,10 @@ function writeData($conn, $responseObject){
 
    echo "Update successful.". PHP_EOL;
    echo "Updating Market Values.". PHP_EOL;
-   system('php /var/www/html/cron/cron_mv_all.php 2>&1', $output);
+   system('php5 '.dirname(__FILE__).'/cron_mv_all.php 2>&1', $output);
    echo $output. PHP_EOL;
-   system('pm2 restart bot', $output); //Restarts the discord bot to prevent caching issues. Replace 'bot' with the name of the apprunning in pm2
-   echo $output. PHP_EOL;
+   //system('pm2 restart bot', $output); //Restarts the discord bot to prevent caching issues. Replace 'bot' with the name of the apprunning in pm2
+   //echo $output. PHP_EOL;
 
    exit();
 ;

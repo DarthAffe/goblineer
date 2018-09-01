@@ -31,7 +31,7 @@ if (isset($seller)) {
             <tr>
                <td>Stack</td>
                <td>Item</td>
-               <td>$/1</td>
+               <td>Item price</td>
                <td>Buyout</td>
                <td>Stack count</td>
                <td>Total items</td>
@@ -56,7 +56,7 @@ if (isset($seller)) {
 
                   $minPrice = number_format(item($item, $conn), 2);
                   $tableRow = "<td>" . $quantity . "</td>
-                         <td><a href='item.php?item=" . $item . "' class='q3 links' rel='item=" . $item . "'></td>
+                         <td><a href='item.php?item=" . $item . "' data-wowhead='domain=de' class='q3 links' rel='item=" . $item . "'></td>
                          <td>" . number_format($unit_price / 10000, 2) . "<span class='gold-g'>g</span></td>
                          <td>" . number_format($buyout / 10000, 2) . "<span class='gold-g'>g</span></td>
                          <td>" . $counter . "</td>

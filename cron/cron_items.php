@@ -28,13 +28,13 @@ $i = 0;
 
 while($row = mysqli_fetch_assoc($result)){
     if(!in_array($row['item'], $alreadydid)){
-        $response = @file_get_contents('https://'. $realmRegion .'.api.battle.net/wow/item/'. $row['item'] .'?locale=en_GB&apikey=' . $apiKey);
+        $response = @file_get_contents('https://'. $realmRegion .'.api.battle.net/wow/item/'. $row['item'] .'?locale=de_DE&apikey=' . $apiKey);
         var_dump($response);
         echo "Before ".$row['item'] ."  auc  ". $i. PHP_EOL;
 
         if($response != false){
             echo "After  ".$row['item'] ."  auc  ". $i. PHP_EOL;
-            $response = file_get_contents('https://'. $realmRegion .'.api.battle.net/wow/item/'. $row['item'] .'?locale=en_GB&apikey=' . $apiKey);
+            $response = file_get_contents('https://'. $realmRegion .'.api.battle.net/wow/item/'. $row['item'] .'?locale=de_DE&apikey=' . $apiKey);
 
             
             $responseObject = json_decode($response, true)['name'];

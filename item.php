@@ -19,17 +19,19 @@ if(isset($item)){
         $stmt->close();
     }
 
-    $stmt = $conn->prepare("select marketvalue, quantity, date from ( SELECT marketvalue, quantity, date FROM historical WHERE item=? ORDER BY date DESC LIMIT 800 ) as tmp order by tmp.date asc");//"SELECT marketvalue, quantity, date FROM historical WHERE item=".$item. " ORDER BY date ASC, marketvalue, quantity";
+    $stmt = $conn->prepare("select minbuyout, marketvalue, quantity, date from ( SELECT minbuyout, marketvalue, quantity, date FROM historical WHERE item=? ORDER BY date DESC LIMIT 800 ) as tmp order by tmp.date asc");//"SELECT marketvalue, quantity, date FROM historical WHERE item=".$item. " ORDER BY date ASC, marketvalue, quantity";
     $stmt->bind_param("s", $item);
     $stmt->execute();
     $stmt->store_result();
-    $stmt->bind_result($marketvalue, $quantity, $date);
+    $stmt->bind_result($minbuyout, $marketvalue, $quantity, $date);
 
     $historicalArrayMv = array();
+    $historicalArrayMinBuyout = array();
     $historicalArrayQuantity = array();
     $historicalArrayDate = array();
 
     while($stmt->fetch()){
+        $historicalArrayMinBuyout[] = floatval($minbuyout);
         $historicalArrayMv[] = floatval($marketvalue);
         $historicalArrayQuantity[] = intval($quantity);
         $historicalArrayDate[] = $date;
@@ -43,13 +45,14 @@ if(isset($item)){
 <?php include "inc/header.inc.php"; ?>
 
 
-<h2><a href='//wowhead.com/item=<?php echo $item;?>' class='q3 iconmedium1 links' rel='item=<?php echo $item;?>' class="text-center"></a></h2>
+<h2><a href='https://wowhead.com/item=<?php echo $item;?>' data-wowhead='domain=de' class='q3 iconmedium1 links' rel='item=<?php echo $item;?>' class="text-center"></a></h2>
 <p>
    <h4>Lowest Price: <?php echo number_format(item($item, $conn), 2);?><span class='gold-g'>g</span></h4>
    <h4>Market Value: <?php echo number_format(marketValue($item, $conn), 2); ?><span class='gold-g'>g</span></h4>
    <h4>Available: <?php echo item_q($item, $conn);?></h4>
 <p>
 
+<div id="JSON-minbuyout" style="display:none;"><?php echo json_encode($historicalArrayMinBuyout); ?></div>
 <div id="JSON-mv" style="display:none;"><?php echo json_encode($historicalArrayMv); ?></div>
 <div id="JSON-quantity" style="display:none;"><?php echo json_encode($historicalArrayQuantity); ?></div>
 <div id="JSON-date" style="display:none;"><?php echo json_encode($historicalArrayDate); ?></div>
@@ -61,7 +64,7 @@ if(isset($item)){
         <thead>
             <tr>
                 <td>Seller</td>
-                <td>$/1</td>
+                <td>Item price</td>
                 <td>Buyout</td>
                 <td>Stack size</td>
                 <td>Stack count</td>

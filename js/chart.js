@@ -6,6 +6,15 @@ String.prototype.replaceAll = function(search, replacement) {
 var myChart = null;
 $(document).ready(function () {
     /*Getting and formatting Data*/
+    var dataMinBuyout0 = document.getElementById('JSON-minbuyout').innerHTML;
+    dataMinBuyout0 = dataMinBuyout0.replace('[','');
+    dataMinBuyout0 = dataMinBuyout0.replace(']','');
+    dataMinBuyout0 = dataMinBuyout0.split(',');
+    for(var i = 0; i < dataMinBuyout0.length; i++){
+        dataMinBuyout0[i] = parseFloat(dataMinBuyout0[i]).toFixed(2);
+    }
+    var dataMinBuyout = dataMinBuyout0.map(Number);
+
     var dataMv0 = document.getElementById('JSON-mv').innerHTML;
     dataMv0 = dataMv0.replace('[','');
     dataMv0 = dataMv0.replace(']','');
@@ -87,6 +96,13 @@ $(document).ready(function () {
             min: 0
         }],
         series: [{
+            name: 'Min Buyout',
+            yAxis: 0,
+            data: dataMinBuyout,
+            dataGrouping: {
+                enabled: true
+            }
+        }, {
             name: 'Market Value',
             yAxis: 0,
             data: dataMv,
